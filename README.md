@@ -1,6 +1,6 @@
 # Loan Management System (LMS)
 
-A full-stack Loan Management System where borrowers apply for loans and internal executives manage loans across their lifecycle[cite: 1].
+A full-stack Loan Management System where borrowers apply for loans and internal executives manage loans across their lifecycle.
 
 ---
 
