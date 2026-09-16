@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/auth-context';
-import { LoadingSpinner } from '@/components/loading-spinner';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 export default function HomePage() {
   const { user, loading } = useAuth();
@@ -12,17 +12,17 @@ export default function HomePage() {
   useEffect(() => {
     if (!loading) {
       if (!user) {
-        router.replace('/login');
-      } else if (user.role === 'BORROWER') {
-        router.replace('/apply');
+        router.replace("/login");
+      } else if (user.role === "BORROWER") {
+        router.replace("/apply");
       } else {
-        router.replace('/dashboard');
+        router.replace("/dashboard");
       }
     }
   }, [user, loading, router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50">
       <LoadingSpinner message="Loading LoanFlow..." />
     </div>
   );
