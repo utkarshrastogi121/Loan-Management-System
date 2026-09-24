@@ -89,9 +89,18 @@ export default function DisbursementPage() {
     }
   };
 
-  const filteredLoans = loans.filter((loan) => {
-    const borrowerName = typeof loan.borrower === 'object' && loan.borrower ? (loan.borrower as User).name : '';
-    const borrowerEmail = typeof loan.borrower === 'object' && loan.borrower ? (loan.borrower as User).email : '';
+  const filteredLoans = loans.filter((loan: any) => {
+    const borrowerObj =
+      typeof loan.borrowerId === 'object'
+        ? loan.borrowerId
+        : typeof loan.borrower === 'object'
+        ? loan.borrower
+        : null;
+
+    const borrowerName =
+      borrowerObj?.personalDetails?.fullName || borrowerObj?.name || '';
+    const borrowerEmail = borrowerObj?.email || '';
+
     return (
       borrowerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       borrowerEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -177,8 +186,20 @@ export default function DisbursementPage() {
                   </td>
                 </tr>
               ) : (
-                filteredLoans.map((loan) => {
-                  const borrower = typeof loan.borrower === 'object' && loan.borrower ? (loan.borrower as User) : null;
+                filteredLoans.map((loan: any) => {
+                  const borrowerObj =
+                    typeof loan.borrowerId === 'object'
+                      ? loan.borrowerId
+                      : typeof loan.borrower === 'object'
+                      ? loan.borrower
+                      : null;
+
+                  const displayName =
+                    borrowerObj?.personalDetails?.fullName ||
+                    borrowerObj?.name ||
+                    'Borrower';
+                  const displayEmail = borrowerObj?.email || '';
+                  const initialLetter = displayName.charAt(0).toUpperCase();
                   const isProcessing = processingId === loan._id;
 
                   return (
@@ -189,11 +210,11 @@ export default function DisbursementPage() {
                       <td className="py-3.5 px-5">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-xs border border-blue-100 shadow-sm">
-                            {borrower ? borrower.name.charAt(0).toUpperCase() : 'B'}
+                            {initialLetter}
                           </div>
                           <div>
-                            <span className="font-semibold text-slate-900 block">{borrower ? borrower.name : 'Borrower'}</span>
-                            <span className="text-[10px] text-slate-400">{borrower ? borrower.email : ''}</span>
+                            <span className="font-semibold text-slate-900 block">{displayName}</span>
+                            <span className="text-[10px] text-slate-400">{displayEmail}</span>
                           </div>
                         </div>
                       </td>
